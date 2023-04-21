@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const logger = require('../utils/logger');
+console.log("check6")
 const sequelize = new Sequelize(process.env.DEV_PGDATABASE_URL);
 const Products = require('../database/models/product')(sequelize, Sequelize.DataTypes)
 const ProductVariant = require('../database/models/product_variant')(sequelize, Sequelize.DataTypes)

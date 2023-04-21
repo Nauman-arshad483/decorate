@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Sequelize , DataTypes } = require('sequelize');
 
+console.log("check2")
 const sequelize = new Sequelize(
   process.env.PGDATABASE, 
   process.env.PGUSER, 

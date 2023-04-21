@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const logger = require('../utils/logger');
+console.log("check5")
 const sequelize = new Sequelize(process.env.DEV_PGDATABASE_URL);
 const ProductImages = require('../database/models/product_images')(sequelize, Sequelize.DataTypes)
 //const { uploadImage } = require('../utils/googleStorage');

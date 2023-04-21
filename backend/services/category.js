@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const logger = require('../utils/logger');
+console.log("check4")
 const sequelize = new Sequelize(process.env.DEV_PGDATABASE_URL);
 const Category = require('../database/models/category')(sequelize, Sequelize.DataTypes)
 const { ErrorHandler } = require('../middlewares/errorHandler');
