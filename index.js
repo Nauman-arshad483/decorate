@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 // Import your routes and middleware here
-app.use('/api', require('./routes/api'));
+app.use('/api', require('./routes'));
 
 server.listen(port, () => {
   logger.info(`Server running on port ${port}`);
