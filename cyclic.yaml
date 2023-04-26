@@ -1,17 +1,26 @@
 version: "1"
 jobs:
-  build:
+  backend-build:
     image: node:14
     steps:
       - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
+        working_directory: ./backend
+        run: npm install
+      - name: Start backend
+        working_directory: ./backend
+        run: node index.js
+  frontend-build:
+    image: node:14
+    steps:
+      - name: Install frontend dependencies
+        working_directory: ./frontend
+        run: npm install
       - name: Build frontend
-        run: |
-          cd frontend
-          npm install
-          npm run build
+        working_directory: ./frontend
+        run: npm run build
+      - name: Start frontend
+        working_directory: ./frontend
+        run: npm start
   deploy:
     image: cyclicci/deploy:latest
     environment:
@@ -33,11 +42,11 @@ jobs:
       AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
     steps:
       - name: Deploy backend
+        working_directory: ./backend
         run: |
-          cd backend
           npm run migrate-up
           node index.js
       - name: Upload frontend assets to S3
+        working_directory: ./frontend/build
         run: |
-          cd frontend
-          aws s3 sync build/ s3://${{ secrets.AWS_S3_BUCKET_NAME }}/
+          aws s3 sync ./ s3://${{ secrets.AWS_S3_BUCKET_NAME }}/
