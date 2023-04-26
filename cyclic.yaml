@@ -4,10 +4,10 @@ jobs:
     image: node:14
     steps:
       - name: Install backend dependencies
-        working_directory: ./backend
+        working_directory: ../backend
         run: npm install
       - name: Start backend
-        working_directory: ./backend
+        working_directory: ../backend
         run: node index.js
   frontend-build:
     image: node:14
@@ -42,7 +42,7 @@ jobs:
       AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
     steps:
       - name: Deploy backend
-        working_directory: ./backend
+        working_directory: ../backend
         run: |
           npm run migrate-up
           node index.js
