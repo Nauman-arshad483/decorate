@@ -1,0 +1,43 @@
+version: "1"
+jobs:
+  build:
+    image: node:14
+    steps:
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+  deploy:
+    image: cyclicci/deploy:latest
+    environment:
+      PGDATABASE: ${{ secrets.PGDATABASE }}
+      PGUSER: ${{ secrets.PGUSER }}
+      PGPASSWORD: ${{ secrets.PGPASSWORD }}
+      PGHOST: ${{ secrets.PGHOST }}
+      PGPORT: ${{ secrets.PGPORT }}
+      DEV_PGDATABASE_URL: ${{ secrets.DEV_PGDATABASE_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      HASH_SALT_KEY: ${{ secrets.HASH_SALT_KEY }}
+      CLIENT_URL: ${{ secrets.CLIENT_URL }}
+      CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+      CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+      CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+    steps:
+      - name: Deploy backend
+        run: |
+          cd backend
+          npm run migrate-up
+          node index.js
+      - name: Upload frontend assets to S3
+        run: |
+          cd frontend
+          aws s3 sync build/ s3://${{ secrets.AWS_S3_BUCKET_NAME }}/

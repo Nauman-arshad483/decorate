@@ -2,6 +2,7 @@ const logger = require('../utils/logger');
 authService = require('../services/auth');
 
 const createUser = async (req, res) => {
+  console.log("hitted")
   logger.info('createUser', req.body);
   const {token , user, cart} = await authService.createUser(req.body);
   res.status(201).json({token, user, cart});
